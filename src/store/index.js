@@ -30,21 +30,40 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    cargar(state, payload){
+      state.usuarios= payload
+    },
     set(state, payload){
       state.usuarios.push(payload)
+      localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
+      router.push('/usuarios');
     },
     eliminar (state, payload){
       state.usuarios=state.usuarios.filter(item => item.id !== payload)
+      localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
     },
      buscar(state, payload){
+       if(! state.usuarios.find(item => item.id === payload)){
+         router.push('/usuarios');
+       }else{
       state.datos= state.usuarios.find(item => item.id === payload)
+       }
     },
     update(state, payload){
       state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)//si el id coincide con el id del objeto modificado, lo reemplazo
       router.push('/usuarios')
+      localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
     }
   },
   actions: {
+    cargarLocalStorage({commit}){
+      if(localStorage.getItem('usuarios')){
+        const usuarios= JSON.parse(localStorage.getItem('usuarios'))
+        commit('cargar', usuarios)
+        return
+      }
+      localStorage.setItem('usuarios', JSON.stringify([]))
+    },
     guardar({commit}, datos){
       commit('set', datos)
     },

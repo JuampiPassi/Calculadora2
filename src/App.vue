@@ -8,7 +8,7 @@
 
 <script>
 
-
+import {mapActions} from 'vuex'
 export default {
   name: "App",
 
@@ -18,5 +18,11 @@ export default {
   data: () => ({
     //
   }),
+  methods:{
+    ...mapActions(['cargarLocalStorage'])
+  },
+  created(){
+    this.cargarLocalStorage()
+  }
 };
 </script>
