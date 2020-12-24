@@ -9,10 +9,10 @@
         <v-text-field v-model="datosUsuario.contraseña"  label="Contraseña" type="password" required></v-text-field>
        
 
-        <v-btn class="mr-4" type="submit" :disabled='bloquear'> Registrar </v-btn>
+        <v-btn class="mr-4" type="submit" :disabled='bloquear' color="info"> Registrar </v-btn>
+        <v-btn to="/usuarios">Cancelar</v-btn>
       </form>
     </template>
-
     <template v-else>
       <h1>Editar Usuario: {{ $route.params.id }} - {{datos}}</h1>
        <form @submit.prevent="editarUsuario">
@@ -22,7 +22,8 @@
         <v-text-field v-model="datosUsuario.contraseña"  label="Contraseña"  return-object required></v-text-field>
        
 
-        <v-btn class="mr-4" type="submit" :disabled='bloquear'> Editar </v-btn>
+        <v-btn class="mr-4" type="submit" color="info" :disabled='bloquear'> Editar </v-btn>
+        <v-btn to="/usuarios">Cancelar</v-btn>
       </form>
     </template>
   </v-container>
@@ -76,9 +77,10 @@ export default {
       ...mapState(['datos']),
   },
   created(){
+      if(this.$route.params.id != -1){
       this.editarDato(this.$route.params.id)
       this.datosUsuario=this.datos
-      
+      }
   }
 };
 </script>
