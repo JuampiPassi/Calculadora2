@@ -20,6 +20,11 @@ const routes = [
     name: 'Editar',
     component: () => import('../views/UsuarioEdit.vue')
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
 ]
 
 const router = new VueRouter({
