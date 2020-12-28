@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 const shortid= require('shortid');//generador de id
 export default {
   name: "edit",
@@ -49,32 +49,34 @@ export default {
   },
   
   methods:{
-      ...mapActions(['guardar']),
+      ...mapActions(['guardar','editarDato', 'editarUsuario', 'comprobarNombre']),
       submit(){
-          console.log(this.datosUsuario)
-            //generar id
-            this.datosUsuario.id= shortid.generate()
-            console.log(this.datosUsuario.id)
-            //enviar los datos
-            this.guardar(this.datosUsuario)
-            //limpiar datos
-            this.datosUsuario={
-                id: '',
-              nombre: '',
-              usuario: '',
-              rol: '',
-              contraseña: ''
+            
+            if(this.comprobarNombre(this.datosUsuario.usuario)){
+              alert('el nombre de usuario ya existe')
+            }else{
+              //generar id
+              this.datosUsuario.id= shortid.generate()
+              //enviar los datos
+              this.guardar(this.datosUsuario)
+              //limpiar datos
+              this.datosUsuario={
+                  id: '',
+                nombre: '',
+                usuario: '',
+                rol: '',
+                contraseña: ''
+              }
             }
-
           },
-         ...mapActions(['editarDato', 'editarUsuario']),
       },
 
   computed:{
+      ...mapState(['datos']),
+      ...mapGetters(['comprobarNombre']),
       bloquear(){
           return this.datosUsuario.nombre.trim()=== '' || this.datosUsuario.usuario==='' || this.datosUsuario.rol==='' || this.datosUsuario.contraseña==='' ? true: false;
       },
-      ...mapState(['datos']),
   },
   created(){
       if(this.$route.params.id != -1){

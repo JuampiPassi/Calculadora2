@@ -1,13 +1,11 @@
 
-import axios from 'axios';
-class Auth {
+/*class Auth {
     
-    getUsuarios() {   }
+    getUsuarios(){ }
+        
  
     login(usuario, pass) {  
-        return new Promise((resolve, reject)=>{
-            axios.post
-        });
+       console.log('entra')
      }
  
     guardar(usuData) {   }
@@ -21,5 +19,5 @@ class Auth {
     getPerfil() {}
  }
  
- export default new Auth()
+ export default new Auth()*/
  

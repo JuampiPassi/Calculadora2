@@ -1,9 +1,6 @@
 <template>
   <v-container style="text-align: center">
-
-      <router-link to="/usuarios">Usuarios</router-link> |
-       <router-link to="/login">Login</router-link>
-      
+      <img src="../assets/logo.svg" alt="" width="30%">
   </v-container>
 </template>
 

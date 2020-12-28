@@ -6,32 +6,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    usuarios:[
-      {
-        id: 1,
-        nombre: "Usario 1",
-        usuario: "usuario",
-        rol: 'Usuario',
-        contraseña: '1234'
-      },
-      {
-        id: 2,
-        nombre: 'Administrador',
-        usuario: 'admin',
-        rol: 'Administrador',
-        contraseña: '789456'
-      }
-    ],
+    usuarios:[],
     datos:{
+      id: '',
       nombre: '',
       usuario: '',
       rol: '',
       contraseña: ''
     },
+    usuarioLogeado: []
   },
   mutations: {
     cargar(state, payload){
       state.usuarios= payload
+    },
+    cargarUsuarioLogeado(state, payload){
+      state.usuarioLogeado= payload
     },
     set(state, payload){
       state.usuarios.push(payload)
@@ -53,16 +43,45 @@ export default new Vuex.Store({
       state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)//si el id coincide con el id del objeto modificado, lo reemplazo
       router.push('/usuarios')
       localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
-    }
+    },
+    user_login(state, payload){
+      
+      if(state.usuarios.find(item => item.usuario === payload.usuario)){
+        const encontrado = state.usuarios.find(item => item.usuario === payload.usuario)
+        if(encontrado.contraseña===payload.contraseña){
+          state.usuarioLogeado=encontrado
+          localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
+          console.log('bienvenido')
+          router.push('/')
+        }else{
+          alert('Contraseña incorrecta')
+        }
+      }else{
+        alert('Usuario incorrecto')
+      }
+    },
+    logoutUser(state){
+      state.usuarioLogeado= {}
+      localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
+      router.push('/')
+    },
   },
   actions: {
     cargarLocalStorage({commit}){
       if(localStorage.getItem('usuarios')){
         const usuarios= JSON.parse(localStorage.getItem('usuarios'))
         commit('cargar', usuarios)
-        return
+      }else{
+        localStorage.setItem('usuarios', JSON.stringify([]))
       }
-      localStorage.setItem('usuarios', JSON.stringify([]))
+
+      if(localStorage.getItem('usuarioLogeado')){
+        const usuarioLogeado= JSON.parse(localStorage.getItem('usuarioLogeado'))
+        commit('cargarUsuarioLogeado', usuarioLogeado)
+      }else{
+        localStorage.setItem('usuarioLogeado', JSON.stringify([]))
+      }
+      
     },
     guardar({commit}, datos){
       commit('set', datos)
@@ -75,8 +94,24 @@ export default new Vuex.Store({
     },
     editarUsuario({commit}, editado){//le paso a update el objeto modificado
       commit('update',editado )
-    }
+    },
+    login({commit}, user){
+      commit('user_login', user)
+    },
+    logout({commit}){
+      commit('logoutUser')
+    },
+   
   },
   modules: {
+  },
+  getters:{
+    comprobarNombre: (state) => (nombre) => {
+      if(state.usuarios.find(item => item.usuario === nombre)){
+        return true
+      }else{
+        return false
+      }
+    }
   }
 })

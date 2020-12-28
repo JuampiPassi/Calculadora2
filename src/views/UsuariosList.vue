@@ -67,7 +67,8 @@ export default {
     },
     methods:{
         ...mapActions(['deleteUsuario']),
-    }
+    },
+
     
 }
 </script>
