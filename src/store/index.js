@@ -15,7 +15,7 @@ export default new Vuex.Store({
       rol: '',
       contraseña: ''
     },
-    usuarioLogeado: []
+    usuarioLogeado:[]
   },
   mutations: {
     cargar(state, payload){
@@ -42,8 +42,17 @@ export default new Vuex.Store({
     },
     update(state, payload){
       state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)//si el id coincide con el id del objeto modificado, lo reemplazo
-      router.push('/usuarios')
       localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
+      router.push('/usuarios')
+    },
+    editarPerfil(state, payload){
+      
+      state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)
+      localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
+      state.usuarioLogeado= payload
+      localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
+      router.push('/usuarios')
+
     },
     user_login(state, payload){
       
@@ -62,7 +71,8 @@ export default new Vuex.Store({
       }
     },
     logoutUser(state){
-      state.usuarioLogeado= []
+      state.usuarioLogeado= ''
+      //localStorage.removeItem('usuarioLogeado')
       localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
       router.push('/')
     },
@@ -96,6 +106,9 @@ export default new Vuex.Store({
     editarUsuario({commit}, editado){//le paso a update el objeto modificado
       commit('update',editado )
     },
+    editarPerfil({commit}, dato){
+      commit('editarPerfil', dato)
+    },
     login({commit}, user){
       commit('user_login', user)
     },
@@ -121,11 +134,11 @@ export default new Vuex.Store({
         return false
       }
     },
-    estaLogeado: (state) =>() =>{
-      if(state.usuarioLogeado == ''){
-        return false
-      }else{
+    isLogged: (state) =>() =>{
+      if(state.usuarioLogeado.rol === 'Administrador' || state.usuarioLogeado.rol === 'Usuario' ){
         return true
+      }else{
+        return false
       }
     }
   }

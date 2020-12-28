@@ -10,6 +10,7 @@
           </template>
           <template v-else>
             <v-toolbar-title color="white">{{this.$store.state.usuarioLogeado.nombre}} - {{this.$store.state.usuarioLogeado.rol}}</v-toolbar-title>
+            <v-btn color="secondary" :to="{name: 'Perfil'}" class="ml-3">Perfil</v-btn>
             <v-btn color="error" @click="salir" class="ml-3">Salir</v-btn>
           </template>
           
@@ -17,6 +18,7 @@
 
     </div>
     <v-container style="text-align: center">
+      
       <router-link to="/" active-class="active">Home</router-link> |
       <router-link to="/usuarios/-1" active-class="active">Nuevo Usuario</router-link> |
       <router-link to="/usuarios">Lista de Usuarios</router-link>
@@ -30,7 +32,7 @@
 
 <script>
 
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "App",
@@ -46,12 +48,13 @@ export default {
   },
   methods:{
     ...mapActions(['cargarLocalStorage', 'logout']),
+    
     salir(){
       this.logout()
     }
   },
   computed:{
-
+...mapGetters(['isLogged']),
   },
   created(){
     this.cargarLocalStorage()

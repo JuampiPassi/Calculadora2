@@ -14,18 +14,50 @@ const routes = [
   {
     path: '/usuarios',
     name: 'Usuarios',
-    component: () => import('../views/UsuariosList.vue')
+    component: () => import('../views/UsuariosList.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.esAdmin()){
+        next()
+      }else{
+        next(false)
+      }
+    }
   },
   {
     path: '/usuarios/:id',
     name: 'Editar',
-    component: () => import('../views/UsuarioEdit.vue')
+    component: () => import('../views/UsuarioEdit.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.esAdmin()){
+        next()
+      }else{
+        next(false)
+      }
+    }
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
-    
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isLogged()){
+        next(false)
+      }else{
+        next()
+      }
+    }
+  },
+  {
+    path: '/perfil',
+    name: 'Perfil',
+    component: () => import('../views/Perfil.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isLogged()){
+        next()
+      }else{
+        next(false)
+      }
+    }
   },
 ]
 
@@ -38,17 +70,31 @@ const router = new VueRouter({
 })
 
 
+/*router.beforeEach((to, from, next) => {
+  
+  if (to.path=='Login'){
+    /*if (store.getters.isLogged){
+      next('/')
+    }else{
+      next()
+    }next()
+    
+  }
+});
 router.beforeEach((to, from, next) => {
   
-  if (to.path==='/login'){
-    if (store.getters.estaLogeado){
+  if(to.name=='Perfil'){
+    const x=store.getters.isLogged()
+    alert(x)
+    if (x){
       next('/')
     }else{
       next()
     }
- 
   }
-  if(to.name=='Home'){
+});
+
+ /* if(to.name=='Home'){
     next()
   }
   if(to.name=='Editar'){
@@ -56,7 +102,7 @@ router.beforeEach((to, from, next) => {
   }
   if(to.name=='Usuarios'){
     next()
-  }
+  }*/
 
  /* if(to.path == '/usuarios/:id'){
     if (to.path == '/usuarios/-1'){
@@ -67,6 +113,5 @@ router.beforeEach((to, from, next) => {
       next('/')
     }
   }*/
-});
 
 export default router
