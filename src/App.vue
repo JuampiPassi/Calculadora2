@@ -6,7 +6,7 @@
         <v-toolbar-title color="white">Vuetify</v-toolbar-title>
           <v-spacer></v-spacer>
           <template v-if="this.$store.state.usuarioLogeado == '' ">
-            <v-btn color="secondary" class="mr-3">Login</v-btn>
+            <v-btn color="secondary" class="mr-3" :to="{name : 'Login'}">Login</v-btn>
           </template>
           <template v-else>
             <v-toolbar-title color="white">{{this.$store.state.usuarioLogeado.nombre}} - {{this.$store.state.usuarioLogeado.rol}}</v-toolbar-title>
@@ -31,6 +31,7 @@
 <script>
 
 import {mapActions} from 'vuex'
+
 export default {
   name: "App",
 
@@ -49,8 +50,12 @@ export default {
       this.logout()
     }
   },
+  computed:{
+
+  },
   created(){
     this.cargarLocalStorage()
+
     
   }
 };

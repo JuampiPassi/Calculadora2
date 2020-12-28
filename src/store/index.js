@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router'
@@ -61,7 +62,7 @@ export default new Vuex.Store({
       }
     },
     logoutUser(state){
-      state.usuarioLogeado= {}
+      state.usuarioLogeado= []
       localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
       router.push('/')
     },
@@ -111,6 +112,20 @@ export default new Vuex.Store({
         return true
       }else{
         return false
+      }
+    },
+    esAdmin: (state) =>() =>{
+      if(state.usuarioLogeado != '' && state.usuarioLogeado.rol=== 'Administrador'){
+        return true
+      }else{
+        return false
+      }
+    },
+    estaLogeado: (state) =>() =>{
+      if(state.usuarioLogeado == ''){
+        return false
+      }else{
+        return true
       }
     }
   }

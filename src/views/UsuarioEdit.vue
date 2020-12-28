@@ -83,6 +83,7 @@ export default {
       this.editarDato(this.$route.params.id)
       this.datosUsuario=this.datos
       }
+      
   }
 };
 </script>
