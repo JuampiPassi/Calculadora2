@@ -15,7 +15,7 @@
     </template>
     <template v-else>
       <h1>Editar Usuario: {{ $route.params.id }} - {{datos}}</h1>
-       <form @submit.prevent="guardar">
+       <form @submit.prevent="editar">
         <v-text-field v-model="datosUsuario.nombre"   label="Nombre" required></v-text-field>
         <v-text-field v-model="datosUsuario.usuario"  label="Usuario" required></v-text-field>
         <v-select :items="items" v-model="datosUsuario.rol"  label="Rol" required></v-select>
@@ -69,10 +69,7 @@ export default {
               }
             }
           },
-          guardar(){
-            if(this.comprobarNombre(this.datosUsuario.usuario)){
-              alert('el nombre de usuario ya existe')
-            }else{
+          editar(){
               this.editarUsuario(this.datosUsuario)
               this.datosUsuario={
                   id: '',
@@ -81,7 +78,6 @@ export default {
                 rol: '',
                 contraseña: ''
               }
-            }
           }
       },
 

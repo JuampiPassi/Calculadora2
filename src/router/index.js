@@ -70,48 +70,5 @@ const router = new VueRouter({
 })
 
 
-/*router.beforeEach((to, from, next) => {
-  
-  if (to.path=='Login'){
-    /*if (store.getters.isLogged){
-      next('/')
-    }else{
-      next()
-    }next()
-    
-  }
-});
-router.beforeEach((to, from, next) => {
-  
-  if(to.name=='Perfil'){
-    const x=store.getters.isLogged()
-    alert(x)
-    if (x){
-      next('/')
-    }else{
-      next()
-    }
-  }
-});
-
- /* if(to.name=='Home'){
-    next()
-  }
-  if(to.name=='Editar'){
-    next()
-  }
-  if(to.name=='Usuarios'){
-    next()
-  }*/
-
- /* if(to.path == '/usuarios/:id'){
-    if (to.path == '/usuarios/-1'){
-      next()
-    }else if(store.getters.esAdmin){
-      next()
-    }else{
-      next('/')
-    }
-  }*/
 
 export default router

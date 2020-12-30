@@ -26,6 +26,7 @@ export default new Vuex.Store({
     },
     set(state, payload){
       state.usuarios.push(payload)
+      //console.log(payload)
       localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
       router.push('/usuarios');
     },
