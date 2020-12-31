@@ -4,7 +4,7 @@
       <form @submit.prevent="guardar">
         <v-text-field v-model="datosUsuario.nombre"   label="Nombre" required></v-text-field>
         <v-text-field v-model="datosUsuario.contraseña"  label="Contraseña"   required></v-text-field>
-        <v-text-field v-model="contraseña2"  label="Conformar Contraseña"  required></v-text-field>
+        <v-text-field v-model="contraseña2"  label="Confirmar Contraseña"  required></v-text-field>
        
 
         <v-btn class="mr-4" type="submit" color="info" :disabled='bloquear'> Guardar </v-btn>

@@ -28,7 +28,10 @@ const routes = [
     name: 'Editar',
     component: () => import('../views/UsuarioEdit.vue'),
     beforeEnter: (to, from, next) => {
-      if (store.getters.esAdmin()){
+      if(to.path=='/usuarios/-1'){
+        next()
+      }
+      else if (store.getters.esAdmin()){
         next()
       }else{
         next(false)

@@ -10,7 +10,7 @@
        
 
         <v-btn class="mr-4" type="submit" :disabled='bloquear' color="info"> Registrar </v-btn>
-        <v-btn to="/usuarios">Cancelar</v-btn>
+        <v-btn to="/">Cancelar</v-btn>
       </form>
     </template>
     <template v-else>

@@ -33,6 +33,7 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex'
+import Auth from './services/auth.js'
 
 export default {
   name: "App",
@@ -58,7 +59,7 @@ export default {
   },
   created(){
     this.cargarLocalStorage()
-
+    Auth.getUsuarios()
     
   }
 };
