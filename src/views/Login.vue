@@ -14,6 +14,7 @@
 
 <script>
 import Auth from '../services/auth'
+import md5 from 'js-md5'
 export default {
  name: 'login',
  data(){
@@ -29,7 +30,8 @@ export default {
  },
  methods: {
       login(){
-        Auth.login(this.usuario, this.contraseña).then((value)=>{
+        var pass=md5(this.contraseña)
+        Auth.login(this.usuario, pass).then((value)=>{
               this.$store.state.datosUsuario=value
          });
       }
