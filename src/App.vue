@@ -5,11 +5,11 @@
         <v-app-bar-nav-icon ></v-app-bar-nav-icon>
         <v-toolbar-title color="white">Vuetify</v-toolbar-title>
           <v-spacer></v-spacer>
-          <template v-if="this.$store.state.usuarioLogeado == '' ">
+          <template v-if="this.$store.state.datosUsuario == '' ">
             <v-btn color="secondary" class="mr-3" :to="{name : 'Login'}">Login</v-btn>
           </template>
           <template v-else>
-            <v-toolbar-title color="white">{{this.$store.state.usuarioLogeado.nombre}} - {{this.$store.state.usuarioLogeado.rol}}</v-toolbar-title>
+            <v-toolbar-title color="white">{{this.$store.state.datosUsuario.nombre}} - {{this.$store.state.datosUsuario.rol}}</v-toolbar-title>
             <v-btn color="secondary" :to="{name: 'Perfil'}" class="ml-3">Perfil</v-btn>
             <v-btn color="error" @click="salir" class="ml-3">Salir</v-btn>
           </template>
@@ -32,8 +32,8 @@
 
 <script>
 
-import {mapActions, mapGetters} from 'vuex'
-import Auth from './services/auth.js'
+import {mapActions} from 'vuex'
+
 
 export default {
   name: "App",
@@ -48,19 +48,16 @@ export default {
     }
   },
   methods:{
-    ...mapActions(['cargarLocalStorage', 'logout']),
+    ...mapActions(['logout', 'cargarUsuario']),
     
     salir(){
       this.logout()
     }
   },
   computed:{
-...mapGetters(['isLogged']),
   },
   created(){
-    this.cargarLocalStorage()
-    Auth.getUsuarios()
-    
+    this.cargarUsuario()
   }
 };
 </script>

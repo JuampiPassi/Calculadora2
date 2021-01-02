@@ -14,7 +14,7 @@
       </form>
     </template>
     <template v-else>
-      <h1>Editar Usuario: {{ $route.params.id }} - {{datos}}</h1>
+      <h1>Editar Usuario</h1>
        <form @submit.prevent="editar">
         <v-text-field v-model="datosUsuario.nombre"   label="Nombre" required></v-text-field>
         <v-text-field v-model="datosUsuario.usuario"  label="Usuario" required></v-text-field>
@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from 'vuex'
+import {mapActions, mapState} from 'vuex'
+import Auth from '../services/auth'
 const shortid= require('shortid');//generador de id
 export default {
   name: "edit",
@@ -49,26 +50,23 @@ export default {
   },
   
   methods:{
-      ...mapActions(['guardar','editarDato', 'editarUsuario', 'comprobarNombre']),
+      ...mapActions(['editarDato', 'editarUsuario']),
       submit(){
-            
-            if(this.comprobarNombre(this.datosUsuario.usuario)){
-              alert('el nombre de usuario ya existe')
-            }else{
-              //generar id
-              this.datosUsuario.id= shortid.generate()
-              //enviar los datos
-              this.guardar(this.datosUsuario)
-              //limpiar datos
-              this.datosUsuario={
-                  id: '',
-                nombre: '',
-                usuario: '',
-                rol: '',
-                contraseña: ''
-              }
-            }
-          },
+        //generar id
+        this.datosUsuario.id= shortid.generate()
+        //enviar los datos
+        Auth.guardar(this.datosUsuario).then((value)=>{
+             console.log('guardar:',value)
+         });
+        //limpiar datos
+        this.datosUsuario={
+            id: '',
+            nombre: '',
+            usuario: '',
+            rol: '',
+            contraseña: ''
+        }
+      },
           editar(){
               this.editarUsuario(this.datosUsuario)
               this.datosUsuario={
@@ -83,15 +81,16 @@ export default {
 
   computed:{
       ...mapState(['datos']),
-      ...mapGetters(['comprobarNombre']),
       bloquear(){
           return this.datosUsuario.nombre.trim()=== '' || this.datosUsuario.usuario==='' || this.datosUsuario.rol==='' || this.datosUsuario.contraseña==='' ? true: false;
       },
   },
   created(){
       if(this.$route.params.id != -1){
-      this.editarDato(this.$route.params.id)
-      this.datosUsuario=this.datos
+      Auth.getPorId(this.$route.params.id).then((value)=>{
+             console.log('datos del usuario:',value)
+            this.datosUsuario=value
+         });
       }
       
   }

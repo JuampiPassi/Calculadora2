@@ -19,7 +19,7 @@
             </v-col>
         </v-row>
         
-        <v-row v-for="item in usuarios" :key="item.id"  class="text-center">
+        <v-row v-for="item in this.ListaUsuarios" :key="item.id"  class="text-center">
             <v-col>
                 <p>{{item.id}}</p>
             </v-col>
@@ -44,7 +44,7 @@
                         <v-card-text>¿Está seguro que desea eliminar el registro id: {{this.id}}?</v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="red darken-1" text @click="dialog = false,deleteUsuario(id)">Eliminar</v-btn>
+                            <v-btn color="red darken-1" text @click="dialog = false,Borrar(id)">Eliminar</v-btn>
                             <v-btn color="green darken-1" text @click="dialog = false">Cancelar</v-btn>
                         </v-card-actions>
                     </v-card>
@@ -52,22 +52,38 @@
     </v-container>
 </template>
 <script>
-import {mapState, mapActions} from 'vuex'
+
+import Auth from '../services/auth'
 export default {
     name: 'usuarios',
     data(){
         return{
             dialog: false,
             id: '',
+            ListaUsuarios: []
+            
         }
     },
 
     computed:{
-        ...mapState(['usuarios']),
+        
     },
     methods:{
-        ...mapActions(['deleteUsuario']),
+        Borrar(id){
+            Auth.borrar(id).then((value)=>{
+             console.log('se eliminó el usuario id: ', value)
+             Auth.getUsuarios().then((value)=>{//vuelvo a cargar la lista de usuarios
+             this.ListaUsuarios=value
+            });
+         });
+        }
     },
+    created(){
+         Auth.getUsuarios().then((value)=>{
+             this.ListaUsuarios=value
+         });
+
+    }
 
     
 }

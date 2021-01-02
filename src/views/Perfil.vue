@@ -15,6 +15,7 @@
 
 <script>
 import {mapActions} from 'vuex'
+import Auth from '../services/auth'
 export default {
     name: 'perfil',
     data(){
@@ -42,7 +43,9 @@ export default {
      
     },
     created(){
-      this.datosUsuario=this.$store.state.usuarioLogeado
+      Auth.getPerfil().then((value)=>{
+        console.log(value)
+      })
     }
 }
 </script>
