@@ -14,10 +14,9 @@
       </form>
     </template>
     <template v-else>
-      <h1>Editar Usuario</h1>
+      <h1>Editar Usuario: {{datosUsuario.usuario}}</h1>
        <form @submit.prevent="editar">
         <v-text-field v-model="datosUsuario.nombre"   label="Nombre" required></v-text-field>
-        <v-text-field v-model="datosUsuario.usuario"  label="Usuario" required></v-text-field>
         <v-select :items="items" v-model="datosUsuario.rol"  label="Rol" required></v-select>
         <v-text-field v-model="datosUsuario.contraseña"  label="Contraseña"  return-object required></v-text-field>
        
@@ -30,7 +29,6 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
 import Auth from '../services/auth'
 const shortid= require('shortid');//generador de id
 export default {
@@ -50,7 +48,6 @@ export default {
   },
   
   methods:{
-      ...mapActions(['editarDato', 'editarUsuario']),
       submit(){
         //generar id
         this.datosUsuario.id= shortid.generate()
@@ -68,7 +65,9 @@ export default {
         }
       },
           editar(){
-              this.editarUsuario(this.datosUsuario)
+              Auth.actualizar(this.datosUsuario).then((value)=>{
+              console.log('Usuario editado: ',value)
+         });
               this.datosUsuario={
                   id: '',
                 nombre: '',
@@ -80,7 +79,6 @@ export default {
       },
 
   computed:{
-      ...mapState(['datos']),
       bloquear(){
           return this.datosUsuario.nombre.trim()=== '' || this.datosUsuario.usuario==='' || this.datosUsuario.rol==='' || this.datosUsuario.contraseña==='' ? true: false;
       },
@@ -88,7 +86,7 @@ export default {
   created(){
       if(this.$route.params.id != -1){
       Auth.getPorId(this.$route.params.id).then((value)=>{
-             console.log('datos del usuario:',value)
+             //console.log('datos del usuario:',value)
             this.datosUsuario=value
          });
       }

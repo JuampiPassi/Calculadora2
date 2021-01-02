@@ -91,24 +91,30 @@ class Auth {
       return new Promise((resolve, reject)=>{
          const usuarioLogeado= JSON.parse(localStorage.getItem('datosUsuario'))
          if(usuarioLogeado != ''){
-           /* usuarioLogeado.forEach(element => {
-               var x= {
-                  id: '',
-                  nombre: '',
-                  usuario: '',
-                  rol: ''
-               }
-               x.id=element.id
-            });*/
             resolve(usuarioLogeado)
          }else{
             reject(new Error('Usuario no encontrado'))
          }
       })
    }
-    /*actualizar(usuData) {
-
-       }*/
+   actualizar(usuData) {
+      return new Promise ((resolve, reject) =>{
+      
+            var usuarios= JSON.parse(localStorage.getItem('usuarios'))
+            usuarios=usuarios.map(item => item.id === usuData.id ? usuData : item)
+            var usuarioLogueado = JSON.parse(localStorage.getItem('datosUsuario'))
+            if (usuarios){
+               localStorage.setItem('usuarios', JSON.stringify(usuarios))
+               if(usuarioLogueado.id===usuData.id){
+                  localStorage.setItem('datosUsuario', JSON.stringify(usuData))
+               }
+               resolve(usuData)
+            }else{
+               reject(new Error('Error'))
+            }
+            
+      })
+   }
 }
  
  export default new Auth()

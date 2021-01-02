@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
 import Auth from '../services/auth'
 export default {
     name: 'perfil',
@@ -36,15 +35,27 @@ export default {
       }
     },
     methods:{
-      ...mapActions(['editarPerfil']),
       guardar(){
-        this.editarPerfil(this.datosUsuario)
+        Auth.actualizar(this.datosUsuario).then((value)=>{
+          console.log('datos actualizados', value)
+      });
+        this.datosUsuario={
+              id: '',
+              nombre: '',
+              usuario: '',
+              rol: '',
+              contraseña: ''
+          },
+          this.contraseña2=''
       }
      
     },
     created(){
       Auth.getPerfil().then((value)=>{
-        console.log(value)
+        this.datosUsuario.id=value.id,
+        this.datosUsuario.nombre=value.nombre,
+        this.datosUsuario.usuario=value.usuario,
+        this.datosUsuario.rol=value.rol
       })
     }
 }

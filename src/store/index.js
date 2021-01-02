@@ -1,7 +1,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import router from '../router'
+//import router from '../router'
 
 Vue.use(Vuex)
 
@@ -11,12 +11,6 @@ export default new Vuex.Store({
     datosUsuario:[],
   },
   mutations: {
-   /* cargar(state, payload){
-      state.usuarios= payload
-    },
-    cargarUsuarioLogeado(state, payload){
-      state.usuarioLogeado= payload
-    },*/
     cargarUsuario(state){//crea el array en el localstorage
       if(! localStorage.getItem('datosUsuario')){
       localStorage.setItem('datosUsuario', JSON.stringify(state.datosUsuario))
@@ -24,9 +18,19 @@ export default new Vuex.Store({
         state.datosUsuario=JSON.parse(localStorage.getItem('datosUsuario'))
       }
       if(! localStorage.getItem('usuarios')){
-      localStorage.setItem('usuarios', JSON.stringify([]))
+        localStorage.setItem('usuarios', JSON.stringify([]))
       }
     },
+    logoutUser(state){//salir
+      state.datosUsuario= []
+      localStorage.setItem('datosUsuario', JSON.stringify([]))
+    }
+   /* cargar(state, payload){
+      state.usuarios= payload
+    },
+    cargarUsuarioLogeado(state, payload){
+      state.usuarioLogeado= payload
+    },*/
     /*set(state, payload){
       state.usuarios.push(payload)
       //console.log(payload)
@@ -37,50 +41,52 @@ export default new Vuex.Store({
       state.usuarios=state.usuarios.filter(item => item.id !== payload)
       localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
     },/*
-     buscar(state, payload){
-       if(! state.usuarios.find(item => item.id === payload)){
-         router.push('/usuarios');
+    buscar(state, payload){
+      if(! state.usuarios.find(item => item.id === payload)){
+        router.push('/usuarios');
        }else{
-      state.datos= state.usuarios.find(item => item.id === payload)
-       }
-    },*/
-    update(state, payload){
-      state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)//si el id coincide con el id del objeto modificado, lo reemplazo
-      localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
-      router.push('/usuarios')
-    },
-    editarPerfil(state, payload){
+         state.datos= state.usuarios.find(item => item.id === payload)
+        }
+      },
+      update(state, payload){
+        state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)//si el id coincide con el id del objeto modificado, lo reemplazo
+        localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
+        router.push('/usuarios')
+      },
+      editarPerfil(state, payload){
+        
+        state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)
+        localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
+        state.usuarioLogeado= payload
+        localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
+        router.push('/usuarios')
+        
+      },
+      /*user_login(state, payload){//guardo en el store los datos del usuario logeado
+        console.log('desde el store: ', payload)
+        //state.datosUsuario.push(payload)
+      },*/
       
-      state.usuarios=state.usuarios.map(item => item.id === payload.id ? payload : item)
-      localStorage.setItem('usuarios', JSON.stringify(state.usuarios))
-      state.usuarioLogeado= payload
-      localStorage.setItem('usuarioLogeado', JSON.stringify(state.usuarioLogeado))
-      router.push('/usuarios')
-
     },
-    /*user_login(state, payload){//guardo en el store los datos del usuario logeado
-      console.log('desde el store: ', payload)
-      //state.datosUsuario.push(payload)
-    },*/
-
-    logoutUser(state){//salir
-      state.datosUsuario= []
-      localStorage.setItem('datosUsuario', JSON.stringify([]))
-    },
-  },
-  actions: {
-   /* cargarLocalStorage({commit}){
-      if(localStorage.getItem('usuarios')){
-        const usuarios= JSON.parse(localStorage.getItem('usuarios'))
-        commit('cargar', usuarios)
-      }else{
-        localStorage.setItem('usuarios', JSON.stringify([]))
+    actions: {
+      logout({commit}){
+        commit('logoutUser')
+      },
+      cargarUsuario({commit}){//inicializa el array de usuario logeado en el localstorage
+        commit('cargarUsuario')
       }
-
-      if(localStorage.getItem('usuarioLogeado')){
-        const usuarioLogeado= JSON.parse(localStorage.getItem('usuarioLogeado'))
-        commit('cargarUsuarioLogeado', usuarioLogeado)
-      }else{
+      /* cargarLocalStorage({commit}){
+        if(localStorage.getItem('usuarios')){
+          const usuarios= JSON.parse(localStorage.getItem('usuarios'))
+          commit('cargar', usuarios)
+        }else{
+          localStorage.setItem('usuarios', JSON.stringify([]))
+        }
+        
+        if(localStorage.getItem('usuarioLogeado')){
+          const usuarioLogeado= JSON.parse(localStorage.getItem('usuarioLogeado'))
+          commit('cargarUsuarioLogeado', usuarioLogeado)
+        }else{
         localStorage.setItem('usuarioLogeado', JSON.stringify([]))
       }
       
@@ -93,7 +99,7 @@ export default new Vuex.Store({
     },
     /*editarDato({commit}, id){
       commit ('buscar', id)
-    },*/
+    },
     editarUsuario({commit}, editado){//le paso a update el objeto modificado
       commit('update',editado )
     },
@@ -103,12 +109,6 @@ export default new Vuex.Store({
     /*login({commit}, user){//recibe nombre de usuario y pass
       commit('user_login', user)
     },*/
-    logout({commit}){
-      commit('logoutUser')
-    },
-    cargarUsuario({commit}){//inicializa el array de usuario logeado en el localstorage
-      commit('cargarUsuario')
-    }
    
   },
   modules: {
