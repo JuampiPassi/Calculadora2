@@ -1,7 +1,9 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import router from '../router'
+import Auth from '../services/auth'
+import md5 from 'js-md5'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -18,12 +20,17 @@ export default new Vuex.Store({
         state.datosUsuario=JSON.parse(localStorage.getItem('datosUsuario'))
       }
       if(! localStorage.getItem('usuarios')){
-        localStorage.setItem('usuarios', JSON.stringify([]))
+        localStorage.setItem('usuarios', JSON.stringify([{id: 1, nombre: 'admin', usuario: 'admin', rol: 'Administrador', contraseña: '21232f297a57a5a743894a0e4a801fc3'}]))
       }
     },
     logoutUser(state){//salir
       state.datosUsuario= []
       localStorage.setItem('datosUsuario', JSON.stringify([]))
+      router.push('/login');
+    },
+    login(state,payload){
+      state.datosUsuario=payload
+     
     }
    /* cargar(state, payload){
       state.usuarios= payload
@@ -74,6 +81,14 @@ export default new Vuex.Store({
       },
       cargarUsuario({commit}){//inicializa el array de usuario logeado en el localstorage
         commit('cargarUsuario')
+      },
+      login({commit}, user){
+        var contraseña=md5(user.contraseña)
+        Auth.login(user.usuario, contraseña).then((value)=>{
+          commit('login',value)
+          router.push('/');
+
+      });
       }
       /* cargarLocalStorage({commit}){
         if(localStorage.getItem('usuarios')){

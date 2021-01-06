@@ -15,7 +15,6 @@
 
 <script>
 import Auth from '../services/auth'
-import md5 from 'js-md5'
 export default {
     name: 'perfil',
     data(){
@@ -37,7 +36,7 @@ export default {
     },
     methods:{
       guardar(){
-        this.datosUsuario.contraseña= md5(this.datosUsuario.contraseña)
+      
         Auth.actualizar(this.datosUsuario).then((value)=>{
           console.log('datos actualizados', value)
       });

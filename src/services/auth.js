@@ -1,5 +1,5 @@
 
-
+import md5 from 'js-md5'
 class Auth {
     
     getUsuarios(){
@@ -29,6 +29,7 @@ class Auth {
    }
      
     login(usuario, pass) {  
+       //console.log(usuario, pass)
        return new Promise((resolve, reject)=>{
          const usuarios= JSON.parse(localStorage.getItem('usuarios'))
          const encontrado=usuarios.find(item => item.usuario === usuario)
@@ -38,10 +39,10 @@ class Auth {
                localStorage.setItem('datosUsuario', JSON.stringify(user))
                resolve(user)
             }else{
-               reject(new Error('Usuario o contraseña inválida'))
+               reject(new Error('Contraseña incorrecta'))
             }
          }else{
-            reject(new Error('Usuario o contraseña inválida'))
+            reject(new Error('Usuario incorrecto'))
          }
       })
    }
@@ -99,7 +100,7 @@ class Auth {
    }
    actualizar(usuData) {
       return new Promise ((resolve, reject) =>{
-      
+            usuData.contraseña=md5(usuData.contraseña)
             var usuarios= JSON.parse(localStorage.getItem('usuarios'))
             usuarios=usuarios.map(item => item.id === usuData.id ? usuData : item)
             var usuarioLogueado = JSON.parse(localStorage.getItem('datosUsuario'))

@@ -15,52 +15,28 @@ const routes = [
     path: '/usuarios',
     name: 'Usuarios',
     component: () => import('../views/UsuariosList.vue'),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.esAdmin()){
-        next()
-      }else{
-        next(false)
-      }
-    }
+    meta: { adminRequired: true }
+   
   },
   {
     path: '/usuarios/:id',
     name: 'Editar',
     component: () => import('../views/UsuarioEdit.vue'),
-    beforeEnter: (to, from, next) => {
-      if(to.path=='/usuarios/-1'){
-        next()
-      }
-      else if (store.getters.esAdmin()){
-        next()
-      }else{
-        next(false)
-      }
-    }
+    meta: { isLogged: true },
+   
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.isLogged()){
-        next(false)
-      }else{
-        next()
-      }
-    }
+    
   },
   {
     path: '/perfil',
     name: 'Perfil',
     component: () => import('../views/Perfil.vue'),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.isLogged()){
-        next()
-      }else{
-        next(false)
-      }
-    }
+    meta: { isLogged: true },
+   
   },
 ]
 
@@ -72,6 +48,32 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) =>{
+  if ((to.meta.adminRequired && !store.getters.esAdmin()) ||
+    (to.meta.isLogged && !store.getters.isLogged())){
+      next('/login')
+    }else{
+      next()
+    }
 
+    if(to.path=='/usuarios/:id'){
+      if(to.path=='/usuarios/-1'){
+        next()
+      }
+      else if (store.getters.esAdmin()){
+        next()
+      }else{
+        next(false)
+      }
+    }
+
+    if(to.path=='/login'){
+      if(store.getters.isLogged()){
+        next(false)
+      }else{
+        next()
+      }
+    }
+})
 
 export default router
