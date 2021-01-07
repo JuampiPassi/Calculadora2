@@ -2,7 +2,7 @@
 import md5 from 'js-md5'
 class Auth {
     
-    getUsuarios(){
+   getUsuarios(){
       return new Promise((resolve, reject) => {
          const usuarios= JSON.parse(localStorage.getItem('usuarios'))
          
@@ -24,6 +24,7 @@ class Auth {
                datos.push(x);
              }
              resolve(datos)
+             resolve(usuarios)
          }
       })
    }

@@ -80,6 +80,7 @@ export default {
     },
     created(){
          Auth.getUsuarios().then((value)=>{
+             console.log(value)
              this.ListaUsuarios=value
          });
 
