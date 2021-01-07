@@ -17,7 +17,7 @@ describe('Auth Service', () => {
         ])
       })
       // llamar al login 
-      let result =  await Auth.login('admin', '81dc9bdb52d04dc20036dbd8313ed055')
+      let result =  await Auth.login('admin', '1234')
       // verificar el resultado de login que se coresponda con el usuario que se pasa
       
       expect(result.id).toBe(1)
@@ -63,7 +63,7 @@ describe('Auth Service', () => {
           {id: 2, nombre: 'Administrador', usuario: 'admin', rol: 'Administrador', pass: '81dc9bdb52d04dc20036dbd8313ed055'}
         ])
       })
-      let result =  await Auth.guardar({id: 5, nombre: 'usuario 2', usuario: 'usuario 2', rol: 'Usuario', contraseña: '81dc9bdb52d04dc20036dbd8313ed055'})
+      let result =  await Auth.guardar({id: 5, nombre: 'usuario 2', usuario: 'usuario 2', rol: 'Usuario', contraseña: '1234'})
 
       expect(result.id).toBe(5)
       expect(result.nombre).toBe('usuario 2')

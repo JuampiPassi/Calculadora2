@@ -30,7 +30,6 @@
 
 <script>
 import Auth from '../services/auth'
-import md5 from 'js-md5'
 const shortid= require('shortid');//generador de id
 export default {
   name: "edit",
@@ -53,8 +52,6 @@ export default {
         //generar id
         this.datosUsuario.id= shortid.generate()
         //Convierto la constraseña a md5
-        this.datosUsuario.contraseña=md5(this.datosUsuario.contraseña)
-        //enviar los datos
         Auth.guardar(this.datosUsuario).then((value)=>{
              console.log('guardar:',value)
          });
@@ -68,7 +65,6 @@ export default {
         }
       },
           editar(){
-            this.datosUsuario.contraseña=md5(this.datosUsuario.contraseña)
               Auth.actualizar(this.datosUsuario).then((value)=>{
               console.log('Usuario editado: ',value)
          });

@@ -2,7 +2,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Auth from '../services/auth'
-import md5 from 'js-md5'
 import router from '../router'
 
 Vue.use(Vuex)
@@ -83,8 +82,7 @@ export default new Vuex.Store({
         commit('cargarUsuario')
       },
       login({commit}, user){
-        var contraseña=md5(user.contraseña)
-        Auth.login(user.usuario, contraseña).then((value)=>{
+        Auth.login(user.usuario, user.contraseña).then((value)=>{
           commit('login',value)
           router.push('/');
 

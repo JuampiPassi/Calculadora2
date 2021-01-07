@@ -30,12 +30,12 @@ class Auth {
    }
      
     login(usuario, pass) {  
-       //console.log(usuario, pass)
+      var contraseña=md5(pass)
        return new Promise((resolve, reject)=>{
          const usuarios= JSON.parse(localStorage.getItem('usuarios'))
          const encontrado=usuarios.find(item => item.usuario === usuario)
          if(encontrado!= undefined){
-            if(encontrado.contraseña===pass){
+            if(encontrado.contraseña===contraseña){
                const user= {id: encontrado.id, nombre: encontrado.nombre, usuario: encontrado.usuario, rol: encontrado.rol}
                localStorage.setItem('datosUsuario', JSON.stringify(user))
                resolve(user)
@@ -58,6 +58,7 @@ class Auth {
             reject(new Error('Rol no valido'))
          }else{
             const Arrayusuarios= JSON.parse(localStorage.getItem('usuarios'))//obtengo el array de usuarios 
+            usuData.contraseña=md5(usuData.contraseña)//guardo el md5 de la contraseña 
             Arrayusuarios.push(usuData)//inserto el nuevo usuario en el array
             localStorage.setItem('usuarios', JSON.stringify(Arrayusuarios))//reemplazo el array en el localstorage
             resolve(usuData)
